@@ -6,11 +6,11 @@ client.remove_command("help")
 
 @client.event
 async def on_ready():
-  os.system("clear")
-  print("{client.user} is online!")
+    os.system("clear")
+    print(f"{client.user} is online!")
 
 @client.command()
 async def ping(ctx):
-  await ctx.reply(f"Pong! Bot Latency: {round(client.latency * 1000)}ms.")
+    await ctx.send(f"Pong!, Bot Latency: {round(client.latency * 1000)}ms.")
 
 client.run("TOKEN")
