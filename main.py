@@ -29,6 +29,7 @@ async def rps(ctx, choice: choices):
     await ctx.reply(f"Bot Choice: {random.choice(choices)}\nYour Choice: {choice}")
 
 @client.command()
+@commands.has_permissions(administrator=True)
 async def status(ctx, *, activity):
     await client.change_presence(activity=disnake.Game(name=activity))
     await ctx.reply(f"Status changed to {activity}.")
