@@ -3,10 +3,12 @@ import disnake
 from disnake.ext import commands
 import random
 
+intents = disnake.Intents.all()
+
 #Ensure you are not using a prefix that another bot has, if so it will be buggy.
 PREFIXES = ["!", "?", "-", ".", ","]
 
-client = commands.Bot(command_prefix=PREFIXES, case_insensitive=True)
+client = commands.Bot(command_prefix=PREFIXES, intents=intents, case_insensitive=True)
 client.remove_command("help")
 
 @client.event
@@ -29,7 +31,6 @@ async def rps(ctx, choice: choices):
     await ctx.reply(f"Bot Choice: {random.choice(choices)}\nYour Choice: {choice}")
 
 @client.command()
-@commands.has_permissions(administrator=True)
 async def status(ctx, *, activity):
     await client.change_presence(activity=disnake.Game(name=activity))
     await ctx.reply(f"Status changed to {activity}.")
@@ -50,5 +51,4 @@ async def multiply(ctx, left: float, right: float):
 async def divide(ctx, left: float, right: float):
     await ctx.reply(f"Answer: {str(left / right)}")
 
-#Your token goes here.
 client.run("TOKEN")
