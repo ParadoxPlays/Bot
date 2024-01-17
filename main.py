@@ -26,11 +26,6 @@ async def eightball(ctx, *, question):
     await ctx.reply(f":8ball: Your Question: {question}\n:8ball: Answer: {random.choice(responses)}")
 
 @client.command()
-async def rps(ctx, choice: choices):
-    choices = ["rock", "paper", "scissors"]
-    await ctx.reply(f"Bot Choice: {random.choice(choices)}\nYour Choice: {choice}")
-
-@client.command()
 async def status(ctx, *, activity):
     await client.change_presence(activity=disnake.Game(name=activity))
     await ctx.reply(f"Status changed to {activity}.")
