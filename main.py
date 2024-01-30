@@ -2,11 +2,14 @@
 import disnake
 from disnake.ext import commands
 import random
+from disnake import Interaction
+from disnake import Intents
+from disnake import Select, View
 
 intents = disnake.Intents.all()
 
 #Ensure you are not using a prefix that another bot has, if so it will be buggy.
-PREFIXES = ["!", "?", "-", ".", ","]
+PREFIXES = ["!", "?"]
 
 client = commands.Bot(command_prefix=PREFIXES, intents=intents, case_insensitive=True)
 client.remove_command("help")
@@ -15,10 +18,29 @@ client.remove_command("help")
 async def on_ready():
     os.system("clear")
     print(f"{client.user} is online!")
+    client.add_view(Verify())
 
-@client.command()
-async def ping(ctx):
-    await ctx.reply(f"Pong!, Bot Latency: {round(client.latency * 1000)}ms.")
+@client.slash_command()
+async def verify(inter: disnake.ApplicationCommandInteraction):
+    await inter.response.send_message("Verification View Sent." ephemeral=True)
+    embed = disnake.Embed(title="Verify", description="Click the button below to verify and gain access to the rest of the discord.", color=0x0000AA)
+    await inter.channel.send(embed=embed, view=Verify())
+
+class Verify(disnake.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        
+    @disnake.ui.button(label="Verify", style=disnake.ButtonStyle.grey, custom_id="verify:grey")
+    async def verify(self, button: disnake.ui.Button, interaction: disnake.Interaction):
+    #Replace Member with whatever role you want the user to receive upon verifying.
+        role = disnake.utils.get(interaction.guild.roles, name="Member")
+        await interaction.user.add_roles(role)
+        await interaction.response.send_message(f"Thank you for verifying {user.mention}.", ephemeral=True)
+
+@client.slash_command()
+async def ping(inter: disnake.ApplicationCommandInteraction):
+    embed = disnake.Embed(title="Pong!", description=f"Client Latency: {round(client.latency * 1000)}ms")
+    await inter.response.send_message(embed=embed)
 
 @client.command(aliases=["8b", "8ball", "eb"])
 async def eightball(ctx, *, question):
