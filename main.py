@@ -32,6 +32,7 @@ class Verify(disnake.ui.View):
         
     @disnake.ui.button(label="Verify", style=disnake.ButtonStyle.grey, custom_id="verify:grey")
     async def verify(self, button: disnake.ui.Button, interaction: disnake.Interaction):
+    #Replace Member with whatever role you want the user to receive upon verifying.
         role = disnake.utils.get(interaction.guild.roles, name="Member")
         await interaction.user.add_roles(role)
         await interaction.response.send_message(f"Thank you for verifying {user.mention}.", ephemeral=True)
