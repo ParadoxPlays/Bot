@@ -22,7 +22,7 @@ async def on_ready():
 
 @client.slash_command()
 async def verify(inter: disnake.ApplicationCommandInteraction):
-    await inter.response.send_message("Verification View Sent." ephemeral=True)
+    await inter.response.send_message("Verification View Sent.", ephemeral=True)
     embed = disnake.Embed(title="Verify", description="Click the button below to verify and gain access to the rest of the discord.", color=0x0000AA)
     await inter.channel.send(embed=embed, view=Verify())
 
@@ -32,7 +32,6 @@ class Verify(disnake.ui.View):
         
     @disnake.ui.button(label="Verify", style=disnake.ButtonStyle.grey, custom_id="verify:grey")
     async def verify(self, button: disnake.ui.Button, interaction: disnake.Interaction):
-    #Replace Member with whatever role you want the user to receive upon verifying.
         role = disnake.utils.get(interaction.guild.roles, name="Member")
         await interaction.user.add_roles(role)
         await interaction.response.send_message(f"Thank you for verifying {user.mention}.", ephemeral=True)
@@ -42,30 +41,30 @@ async def ping(inter: disnake.ApplicationCommandInteraction):
     embed = disnake.Embed(title="Pong!", description=f"Client Latency: {round(client.latency * 1000)}ms")
     await inter.response.send_message(embed=embed)
 
-@client.command(aliases=["8b", "8ball", "eb"])
-async def eightball(ctx, *, question):
+@client.slash_command(aliases=["8b", "8ball", "eb"])
+async def eightball(inter: disnake.ApplicationCommandInteraction, *, question):
     responses = ["It is certain.","It is decidedly so.","Without a doubt.","Yes - definitely.","You may rely on it.","As I see it, yes.","Most likely.","Outlook good.","Yes.","Signs point to yes.","Reply hazy, try again.","Cannot predict now.","Concentrate and ask again.","Don't count on it.","My reply is no.","My sources say no.","Outlook not so good.","Very doubtful."]
-    await ctx.reply(f":8ball: Your Question: {question}\n:8ball: Answer: {random.choice(responses)}")
+    await inter.response.send_message(f":8ball: Your Question: {question}\n:8ball: Answer: {random.choice(responses)}")
 
-@client.command()
-async def status(ctx, *, activity):
+@client.slash_command()
+async def status(inter: disnake.ApplicationCommandInteraction, *, activity):
     await client.change_presence(activity=disnake.Game(name=activity))
-    await ctx.reply(f"Status changed to {activity}.")
+    await inter.response.send_message(f"Status changed to {activity}.")
 
-@client.command()
-async def add(ctx, left: float, right: float):
-    await ctx.reply(f"Answer: {str(left + right)}")
+@client.slash_command()
+async def add(inter: disnake.ApplicationCommandInteraction, left: float, right: float):
+    await inter.response.send_message(f"Answer: {str(left + right)}")
 
-@client.command()
-async def subtract(ctx, left: float, right: float):
-    await ctx.reply(f"Answer: {str(left - right)}")
+@client.slash_command()
+async def subtract(inter: disnake.ApplicationCommandInteraction, left: float, right: float):
+    await inter.response.send_message(f"Answer: {str(left - right)}")
 
-@client.command()
-async def multiply(ctx, left: float, right: float):
-    await ctx.reply(f"Answer: {str(left * right)}")
+@client.slash_command()
+async def multiply(inter: disnake.ApplicationCommandInteraction, left: float, right: float):
+    await inter.response.send_message(f"Answer: {str(left * right)}")
 
-@client.command()
-async def divide(ctx, left: float, right: float):
-    await ctx.reply(f"Answer: {str(left / right)}")
+@client.slash_command()
+async def divide(inter: disnake.ApplicationCommandInteraction, left: float, right: float):
+    await inter.response.send_message(f"Answer: {str(left / right)}")
 
 client.run("TOKEN")
